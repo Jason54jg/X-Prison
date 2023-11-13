@@ -3,6 +3,7 @@ package dev.drawethree.xprison.enchants.model.impl;
 import dev.drawethree.xprison.api.enums.ReceiveCause;
 import dev.drawethree.xprison.enchants.XPrisonEnchants;
 import dev.drawethree.xprison.enchants.model.XPrisonEnchantment;
+import dev.drawethree.xprison.manager.EventManager;
 import dev.drawethree.xprison.tokens.XPrisonTokens;
 import dev.drawethree.xprison.utils.player.PlayerUtils;
 import me.lucko.helper.utils.Players;
@@ -53,20 +54,21 @@ public final class BlessingEnchant extends XPrisonEnchantment {
             return;
         }
 
-        long amount = (long) createExpression(enchantLevel).evaluate();
+        var event = EventManager.callBlessingGiveTokensEvent(e.getPlayer(), (long) createExpression(enchantLevel).evaluate(), chance, Players.all());
 
-        for (Player p : Players.all()) {
-            plugin.getCore().getTokens().getTokensManager().giveTokens(p, amount, null, ReceiveCause.MINING_OTHERS);
+        if (event.isCancelled()) {
+            return;
+        }
 
-            if (!this.isMessagesEnabled()) {
+        var amount = event.getTokenAmount();
+
+
+        for (var p : event.getRecipients()) {
+            if (!p.getWorld().getName().equals("Mines")) {
                 continue;
             }
 
-            if (p.equals(e.getPlayer())) {
-                PlayerUtils.sendMessage(p, plugin.getEnchantsConfig().getMessage("blessing_your").replace("%amount%", String.format("%,d", amount)));
-            } else {
-                PlayerUtils.sendMessage(p, plugin.getEnchantsConfig().getMessage("blessing_other").replace("%amount%", String.format("%,d", amount)).replace("%player%", e.getPlayer().getName()));
-            }
+            plugin.getCore().getTokens().getTokensManager().giveTokens(p, amount, null, ReceiveCause.MINING_OTHERS);
         }
     }
 

@@ -3,3 +3,6 @@ dependency-reduced-pom.xml
 .idea
 .circleci
 *.iml
+*.class
+/target/
+/modules/*/target

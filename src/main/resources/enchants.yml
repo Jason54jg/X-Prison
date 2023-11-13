@@ -183,23 +183,35 @@ enchants:
       InGuiSlot: 28
       Percentage: 50.0
   '3':
-    RawName: "fortune"
-    Name: '&cFortune'
-    GuiName: '&cFortune'
-    Material: BOOK
+    RawName: fortune
+    Name: '&fFortune&7'
+    GuiName: '&f&lFortune&7'
+    Material: PLAYER_HEAD
     Enabled: true
-    InGuiSlot: 29
-    Increase-Cost-by: 75
-    Max: -1
-    Cost: 75
+    InGuiSlot: 20
+    Increase-Cost-by: 2
+    Max: 30000
+    Cost: 10
     Blacklist:
       - BEDROCK
     Description:
       - '&7&o(( Ability to receive more blocks while mining ))'
     Refund:
       Enabled: true
-      InGuiSlot: 29
+      InGuiSlot: 20
       Percentage: 50.0
+    Whitelist:
+      - STONE
+      - COBBLESTONE
+      - IRON_ORE
+      - DIAMOND_ORE
+      - GOLD_ORE
+      - QUARTZ_ORE
+      - COAL_ORE
+      - PRISMARINE
+      - DARK_PRISMARINE
+      - PRISMARINE_BRICKS
+    Pickaxe-Level-Required: 1
   '4':
     RawName: "haste"
     Name: '&dHaste'
